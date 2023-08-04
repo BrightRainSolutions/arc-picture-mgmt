@@ -1,0 +1,15 @@
+{
+  "name": "arc-picture-mgmt",
+  "version": "0.0.1",
+  "description": "manage picture attachments in arc land",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --server --watch --browser \"chrome\"",
+    "build": "copyfiles \"**/*\" -e 'node_modules/**/*' -e 'dist/**/*' dist"
+  },
+  "author": "dp",
+  "license": "MIT",
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
+  }
+}

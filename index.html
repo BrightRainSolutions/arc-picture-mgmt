@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MAKE MY PICTURE">
+  <meta name="apple-mobile-web-app-status-bar" content="#ff6600" />
+  <meta name="theme-color" content="#0044aa" />
+  <link rel="icon" href="/assets/camera.svg">
+  <title>PICTURE MGMT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <link href="index.css" rel="stylesheet">
+  <script src="index.js" type="module"></script>
+</head>
+
+<body>
+  <main id="app" class="has-text-centered">
+    <h1 id="title" class="subtitle is-1 primary-orange">
+      <span>MANAGE THEM PICTURES</span>
+      <img id="header-camera" src="assets/camera.svg" class="is-pulled-left">
+    </h1>
+    <div class="columns">
+      <div class="column">
+        <form id="upload-form">
+          <div class="upload-file">
+            <label for="uploadFile" class="file-upload-label">
+              <img id="upload-btn-icon" src="assets/upload.svg" width="20px">SELECT PICTURES
+            </label>
+            <input id="uploadFile" @change="refreshFiles" type="file" name="uploadFile" accept="image/*" multiple>
+          </div>
+        </form>
+      <button id="upload-picture-btn" @click="uploadImages" title="upload a picture">
+        <b>Upload Selected Pictures</b><br>
+        <img id="camera-icon" src="assets/upload.svg" width="100px">
+      </button>
+      </div>
+      <div class="column">
+        <div id="selectCount" class="primary-orange is-size-2">{{ files.length }}</div>
+        <ul id="fileList">
+          <li v-for="file in files" 
+            :key="file.name"
+            class="primary-blue box">{{ file.name }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-flex is-flex-wrap-wrap">
+        <div v-for="attachment in currentAttachments" class="box flex-wrap">
+          <b>{{ attachment.name }}</b>
+          <figure class="image is-128x128">
+            <img :src="attachment.url" alt="attachment">
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div id="snackbar">snack attack</div>
+  </main>
+</body>
+
+</html>

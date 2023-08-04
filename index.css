@@ -1,0 +1,144 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+
+:root {
+  --primary-orange: #ff6600;
+  --primary-blue: #0044aa;  
+  --secondary-gray: #b7c4c8;
+  --secondary-brown: #9B7653
+}
+
+.primary-orange {
+  color: var(--primary-orange)
+}
+
+.primary-blue {
+  color: var(--primary-blue)
+}
+
+.secondary-gray {
+  color: var(--primary-gray)
+}
+
+.secondary-brown {
+  color: var(--primary-brown)
+}
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#title {
+  text-align: center;
+}
+
+/* Hiding the original input field */
+#uploadFile {
+  display: none;
+}
+
+/* Styling the label that is acting like our custom input field */
+.file-upload-label {
+  padding: 10px;
+  color: var(--primary-orange);
+  background-color: white;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 6px;
+  outline: 1px solid var(--primary-orange);
+  margin: 8px;
+}
+
+/* Changing appearance when the user hovers the 'button' */
+.file-upload-label:hover {
+  outline: 3px solid var(--primary-orange);
+}
+
+#header-camera{
+  width: 133px
+}
+#camera-icon {
+  width: 100px
+}
+
+#upload-btn-icon {
+  width: 20px
+}
+
+button {
+  margin: 8px;
+  width: 180px;
+  border-radius: 5px;
+  padding: 6px;
+  border: 3px solid var(--primary-orange);
+  background-color: white;
+  color: var(--primary-orange);
+}
+
+#picture-options-container {
+  margin: 24px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+ @media only screen and (max-width: 450px) {
+  #camera-container, #picture-container {
+    width: 100%;
+    height: 100%;
+  }
+ }
+ 
+ @media only screen and (min-width: 601px) {
+  
+ }
+
+  /* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #333; /* Black background color */
+  color: #fff; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+} 
