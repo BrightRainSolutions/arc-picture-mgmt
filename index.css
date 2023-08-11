@@ -29,6 +29,11 @@ body {
   padding: 0;
 }
 
+#map-view {
+  width:600px;
+  height:400px
+}
+
 #title {
   text-align: center;
 }
@@ -58,7 +63,7 @@ body {
 }
 
 #header-camera{
-  width: 133px
+  width: 50px
 }
 #camera-icon {
   width: 100px

@@ -11,52 +11,104 @@
   <meta name="theme-color" content="#0044aa" />
   <link rel="icon" href="/assets/camera.svg">
   <title>PICTURE MGMT</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/@arcgis/core/assets/esri/themes/light/main.css">
   <link href="index.css" rel="stylesheet">
+  <!-- we are importing es modules from cdn inside our index.js (for vue, arcgis...) -->
   <script src="index.js" type="module"></script>
 </head>
 
 <body>
   <main id="app" class="has-text-centered">
-    <h1 id="title" class="subtitle is-1 primary-orange">
+    <div id="title" class="is-size-3 primary-orange">
+      <img id="header-camera" class="is-pulled-left m-2" src="assets/camera.svg">
       <span>MANAGE THEM PICTURES</span>
-      <img id="header-camera" src="assets/camera.svg" class="is-pulled-left">
-    </h1>
+    </div>
     <div class="columns">
       <div class="column">
-        <form id="upload-form">
+        <div id="map-view"></div>
+      </div>
+      <div class="column">
+        <div v-show="currentWorkRecords.length>0" class="is-size-3">{{ currentSiteName }} Work Records</div>
+        <div v-show="currentWorkRecords.length===0" class="primary-orange">select site to see work records</div>
+        <ul id="workList">
+          <li v-for="workRecord in currentWorkRecords"
+            :key="workRecord.oid"
+            class="primary-blue box is-clickable"
+            @click="getPictures(workRecord)">
+            <div class="tag is-light is-medium is-pulled-left has-text-weight-bold">{{ workRecord.action }}</div>
+            <div>{{ workRecord.date }} {{ workRecord.time }}</div>
+          </li>
+        </ul>
+      </div>
+      <div class="column">
+        <form id="upload-form" v-show="files.length==0">
           <div class="upload-file">
             <label for="uploadFile" class="file-upload-label">
               <img id="upload-btn-icon" src="assets/upload.svg" width="20px">SELECT PICTURES
             </label>
-            <input id="uploadFile" @change="refreshFiles" type="file" name="uploadFile" accept="image/*" multiple>
+            <input id="uploadFile" 
+              @change="refreshFiles" 
+              type="file" 
+              name="uploadFile" 
+              accept="image/*" 
+              multiple>
           </div>
         </form>
-      <button id="upload-picture-btn" @click="uploadImages" title="upload a picture">
-        <b>Upload Selected Pictures</b><br>
-        <img id="camera-icon" src="assets/upload.svg" width="100px">
-      </button>
-      </div>
-      <div class="column">
-        <div id="selectCount" class="primary-orange is-size-2">{{ files.length }}</div>
+        <div id="selectCount" 
+          class="primary-orange is-size-2" 
+          v-show="files.length>0">{{ files.length }}</div>
+        <button id="upload-picture-btn"
+          v-show="files.length>0" 
+          @click="uploadImages" 
+          title="upload a picture">
+          <b>Upload Selected Pictures</b><br>
+          <img id="camera-icon" src="assets/upload.svg" width="100px">
+        </button>
+        <br>
+        <button id="clear-picture-btn"
+          v-show="files.length>0" 
+          @click="clearFiles" 
+          title="clear selected pictures">
+          <b>CANCEL</b>
+        </button>
+        <div class="primary-orange is-size-6" v-show="files.length===0"><i>no pictures selected for upload</i></div>
         <ul id="fileList">
-          <li v-for="file in files" 
+          <li v-for="file in files"
             :key="file.name"
             class="primary-blue box">{{ file.name }}</li>
         </ul>
       </div>
     </div>
     <div class="columns">
-      <div class="column is-flex is-flex-wrap-wrap">
-        <div v-for="attachment in currentAttachments" class="box flex-wrap">
-          <b>{{ attachment.name }}</b>
-          <figure class="image is-128x128">
-            <img :src="attachment.url" alt="attachment">
-          </figure>
+      <div class="column">
+        <div class="tag is-light is-large has-text-weight-bold">{{ currentWorkRecord.action }}</div>
+        <div class="is-size-4 has-text-weight-bold">{{ currentWorkRecord.date }} {{ currentWorkRecord.time }}</div>
+        <div class="is-flex is-flex-wrap-wrap">
+          <div v-show="currentAttachments.length===0" class="primary-orange ml-4">no pictures available</div>
+            <div v-for="attachment in currentAttachments" class="box flex-wrap">
+              <div class="delete is-pulled-right" 
+                @click="deleteAttachment(attachment)"
+                title="delete this attachment"
+                style="margin:-12px -12px auto auto"></div>
+              <div class="is-size-6">{{ attachment.name }}</div>
+              <img :src="attachment.url" 
+                alt="attachment" 
+                width=128
+                @click="showBigPicture(attachment.url)">
+            </div>
         </div>
       </div>
     </div>
-
+    <div class="modal" :class="{ 'is-active': isShowingBigPicture }">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <p class="image">
+          <img :src="bigPictureSource" alt="">
+        </p>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="isShowingBigPicture=false"></button>
+    </div>
     <div id="snackbar">snack attack</div>
   </main>
 </body>
