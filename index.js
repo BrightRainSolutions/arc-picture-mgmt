@@ -22,6 +22,7 @@ createApp({
 	  currentSiteId: 0,
 	  bigPictureSource: "",
 	  isShowingBigPicture: false,
+	  isShowingPictures: false,
 	  sitesLayer: Object,
 	  workLayer: Object
     }
@@ -47,6 +48,15 @@ createApp({
 		zoom: 11,
 		container: "map-view"
 	});
+
+	const workLayer = new FeatureLayer({
+		visible: false,
+		portalItem: {
+			id: "2bbadf2f5ea54cf79c075670f129246f"
+		}
+	});
+	map.add(workLayer);
+
 	const sitesLayer = new FeatureLayer({
 		portalItem: {
 			id: "79432d649f864ed7aba8a3a925bd2724"
@@ -55,13 +65,6 @@ createApp({
 		popupEnabled: false
 	});
 	map.add(sitesLayer);
-
-	const workLayer = new FeatureLayer({
-		portalItem: {
-			id: "2bbadf2f5ea54cf79c075670f129246f"
-		}
-	});
-	map.add(workLayer);
 
 	view.on("click", event => {
 		// 
@@ -78,6 +81,7 @@ createApp({
 			};
 			this.currentWorkRecords = [];
 			this.currentAttachments = [];
+			this.isShowingPictures = false;
 			if (response.results?.length > 0) {
 			this.currentSiteName = response.results[0].graphic.attributes.LOC_NAME;
 			this.currentSiteId = response.results[0].graphic.attributes.SITE_ID;
@@ -164,6 +168,7 @@ createApp({
 	getPictures(workRecord) {
 		this.currentWorkRecord = workRecord;
 		this.selectedOid = workRecord.oid;
+		this.isShowingPictures = true;
 		this.fetchFeatureAttachments();
 	},
 	async fetchFeatureAttachments() {
@@ -181,8 +186,6 @@ createApp({
 					}
 					this.currentAttachments.push(a);
 				});
-			} else {
-				
 			}
 		}
 		catch(e) {

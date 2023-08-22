@@ -22,13 +22,13 @@
   <main id="app" class="has-text-centered">
     <div id="title" class="is-size-3 primary-orange">
       <img id="header-camera" class="is-pulled-left m-2" src="assets/camera.svg">
-      <span>MANAGE THEM PICTURES</span>
+      <span>PICTURE MGMT</span>
     </div>
     <div class="columns">
       <div class="column">
         <div id="map-view"></div>
       </div>
-      <div class="column">
+      <div class="column" v-show="!isShowingPictures">
         <div v-show="currentWorkRecords.length>0" class="is-size-3">{{ currentSiteName }} Work Records</div>
         <div v-show="currentWorkRecords.length===0" class="primary-orange">select site to see work records</div>
         <ul id="workList">
@@ -41,11 +41,17 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="columns" v-show="isShowingPictures">
       <div class="column">
-        <form id="upload-form" v-show="files.length==0">
+        <div class="is-size-2 has-text-weight-bold is-pulled-left is-clickable"
+        @click="isShowingPictures=false">⬅️</div>
+        <div class="tag is-light is-large has-text-weight-bold">{{ currentWorkRecord.action }}</div>
+        <div class="is-size-4 has-text-weight-bold">{{ currentWorkRecord.date }} {{ currentWorkRecord.time }}</div>
+        <form id="upload-form" class="is-pulled-right" v-show="files.length==0">
           <div class="upload-file">
             <label for="uploadFile" class="file-upload-label">
-              <img id="upload-btn-icon" src="assets/upload.svg" width="20px">SELECT PICTURES
+              <img id="upload-btn-icon" src="assets/upload.svg" width="20px">ADD PICTURES
             </label>
             <input id="uploadFile" 
               @change="refreshFiles" 
@@ -72,18 +78,11 @@
           title="clear selected pictures">
           <b>CANCEL</b>
         </button>
-        <div class="primary-orange is-size-6" v-show="files.length===0"><i>no pictures selected for upload</i></div>
         <ul id="fileList">
           <li v-for="file in files"
             :key="file.name"
             class="primary-blue box">{{ file.name }}</li>
         </ul>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <div class="tag is-light is-large has-text-weight-bold">{{ currentWorkRecord.action }}</div>
-        <div class="is-size-4 has-text-weight-bold">{{ currentWorkRecord.date }} {{ currentWorkRecord.time }}</div>
         <div class="is-flex is-flex-wrap-wrap">
           <div v-show="currentAttachments.length===0" class="primary-orange ml-4">no pictures available</div>
             <div v-for="attachment in currentAttachments" class="box flex-wrap">
