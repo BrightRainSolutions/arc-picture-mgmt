@@ -30,7 +30,7 @@ body {
 }
 
 #map-view {
-  width:600px;
+  width:100%;
   height:400px
 }
 
@@ -92,7 +92,7 @@ button:hover {
 }
 
  @media only screen and (max-width: 450px) {
-  #camera-container, #picture-container {
+#picture-container {
     width: 100%;
     height: 100%;
   }
