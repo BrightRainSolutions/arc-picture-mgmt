@@ -21,12 +21,13 @@
 <body>
   <main id="app" class="has-text-centered">
     <div id="title" class="is-size-4 primary-orange">
-      <img id="header-camera" class="is-pulled-left m-2" src="assets/camera.svg">
+      <img id="header-camera" class="mr-2" src="assets/camera.svg">
       <span>PICTURE MGMT</span>
     </div>
     <div class="columns">
       <div class="column">
-        <div id="map-view"></div>
+        <div id="map-view" class="ml-2"></div>
+        <div :class="{ runner: isUploadingPictures }"></div>
       </div>
       <div class="column" v-show="!isShowingPictures">
         <div v-show="currentWorkRecords.length>0" class="is-size-3">{{ currentSiteName }} Work Records</div>

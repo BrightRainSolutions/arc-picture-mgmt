@@ -23,8 +23,7 @@ createApp({
 	  bigPictureSource: "",
 	  isShowingBigPicture: false,
 	  isShowingPictures: false,
-	  sitesLayer: Object,
-	  workLayer: Object
+	  isUploadingPictures: false
     }
   },
   mounted() {
@@ -108,7 +107,9 @@ createApp({
 		});
 	},
 	async uploadImages() {
-		for (let i = 0; i < this.files.length; i++) {
+		this.isUploadingPictures = true;
+		// iterate the files backwards so we can remove them after upload (which will reduce the count and remove the item from the UI)
+		for (let i = this.files.length - 1; i >= 0; i--) {
 			const file = this.files[i];
 			let formData = new FormData();
 			formData.append("file", file);
@@ -133,10 +134,13 @@ createApp({
 			catch(e) {
 				console.log(e);
 			}
+			// remove from list once processed
+			this.files.splice(i, 1);
 		}
 		// clear the selected files regardless
 		this.files = [];
 		this.fetchFeatureAttachments();
+		this.isUploadingPictures = false;
 	},
 	async deleteAttachment(attachment) {
 		let formData = new FormData();
